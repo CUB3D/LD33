@@ -3,6 +3,7 @@
 
 #include "Input.h"
 #include "Vector.h"
+#include "Loader.h"
 
 
 EntityPlayer::EntityPlayer(Unknown::Sprite* sprite, int health) : HealthEntity(sprite, health)
@@ -95,4 +96,8 @@ void EntityEnemy::update()
 
 	this->sprite->location.x += direction.x;
 	this->sprite->location.y += direction.y;
+}
+
+EntityBullet::EntityBullet() : TwoStateEntity(UK_LOAD_SPRITE("Entitys/BulletSprite.json"))
+{
 }

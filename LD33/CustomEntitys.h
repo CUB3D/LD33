@@ -21,5 +21,11 @@ public:
 	virtual void update() override;
 };
 
+class EntityBullet : public Unknown::TwoStateEntity
+{
+public:
+	EntityBullet();
+};
+
 #endif
 
