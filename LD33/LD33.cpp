@@ -9,22 +9,28 @@
 #include <Loader.h>
 
 #include "CustomEntitys.h"
+#include "Map.h"
 
 EntityPlayer* player = NULL;
+Map* map = NULL;
 
 void render()
 {
-	player->render();
+	map->render();
 }
 
 void update()
 {
-	player->update();
+	map->update();
 }
 
 void init()
 {
 	player = new EntityPlayer(UK_LOAD_SPRITE("Entitys/Player.json"), 100);
+
+	UK_REGISTER_ENTITY(player);
+
+	map = generateRandomMap(1);
 }
 
 int main()

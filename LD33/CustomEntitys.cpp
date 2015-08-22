@@ -49,3 +49,50 @@ void EntityPlayer::update()
 		this->sprite->location.y--;
 	}
 }
+
+EntityEnemy::EntityEnemy(Unknown::Sprite* sprite, int health) : HealthEntity(sprite, health)
+{
+}
+
+void EntityEnemy::update()
+{
+	if (!(rand() % 100))
+	{
+		Unknown::Vector nodeVector(rand() % 200 + 1, rand() % 200 + 1);
+		Unknown::Vector locationVector(this->sprite->location.x, this->sprite->location.y);
+
+		int angle = nodeVector.getAngleTo(locationVector);
+
+		this->sprite->setAngle(angle);
+
+		direction.x = rand() % 3 - 1;
+		direction.y = rand() % 3 - 1;
+	}
+
+	if ((this->sprite->location.x <= 10 || this->sprite->location.x >= 600))
+	{
+		Unknown::Vector nodeVector(rand() % 200 + 1, rand() % 200 + 1);
+		Unknown::Vector locationVector(this->sprite->location.x, this->sprite->location.y);
+
+		int angle = nodeVector.getAngleTo(locationVector);
+
+		this->sprite->setAngle(angle);
+
+		direction.x = !direction.x;
+	}
+
+	if ((this->sprite->location.y <= 10 || this->sprite->location.y >= 600))
+	{
+		Unknown::Vector nodeVector(rand() % 200 + 1, rand() % 200 + 1);
+		Unknown::Vector locationVector(this->sprite->location.x, this->sprite->location.y);
+
+		int angle = nodeVector.getAngleTo(locationVector);
+
+		this->sprite->setAngle(angle);
+
+		direction.y = !direction.y;
+	}
+
+	this->sprite->location.x += direction.x;
+	this->sprite->location.y += direction.y;
+}
