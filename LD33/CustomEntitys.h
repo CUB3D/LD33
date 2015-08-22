@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Utils.h"
+#include "Input.h"
 
 class EntityPlayer : public Unknown::HealthEntity
 {
@@ -24,8 +25,14 @@ public:
 class EntityBullet : public Unknown::TwoStateEntity
 {
 public:
-	EntityBullet();
+	Unknown::Point<double> location;
+
+	EntityBullet(const double angle, const int x, const int y);
+
+	virtual void update() override;
+
+	void move(double sX, double sY);
+		
 };
 
 #endif
-

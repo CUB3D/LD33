@@ -5,10 +5,13 @@
 #include "Entity.h"
 #include "Image.h"
 
+#include "CustomEntitys.h"
+
 class Map
 {
 public:
 	std::vector<Unknown::Entity*> entitys;
+	std::vector<EntityBullet*> bullets;
 	Unknown::Graphics::Image* background;
 
 	Map(Unknown::Graphics::Image* background);

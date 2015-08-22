@@ -3,6 +3,7 @@
 
 #include "CustomEntitys.h"
 #include "Loader.h"
+#include "Physics.h"
 
 #include <iostream>
 
@@ -21,11 +22,35 @@ void Map::render()
 	}
 }
 
+#include <iostream>
+
 void Map::update()
 {
 	for (auto entity : this->entitys)
 	{
 		entity->update();
+	}
+
+	// Collision check
+
+	for (auto bullet : bullets)
+	{
+		for (auto entity : entitys)
+		{
+			if (bullet->isAlive() && entity->isAlive())
+			{
+				int a = bullet->sprite->location.x - entity->sprite->location.x;
+				int b = bullet->sprite->location.y - entity->sprite->location.y;
+				double dist = sqrt((a * a) + (b * b));
+
+				if (dist < 10)
+				{
+					entity->damage(1);
+
+					bullet->kill();
+				}
+			}
+		}
 	}
 }
 
