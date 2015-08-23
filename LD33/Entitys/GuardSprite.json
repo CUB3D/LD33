@@ -2,5 +2,5 @@
 	"X":256,
 	"Y":256,
 	"Type":"Image",
-	"Image":"res/Enemy.png"
+	"Image":"res/Guard.png"
 }
