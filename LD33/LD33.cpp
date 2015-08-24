@@ -29,6 +29,11 @@ bool hasDiedYet = false;
 
 Unknown::Graphics::Image failScreen("res/Failscreen.png");
 
+void restartListener(Unknown::MouseEvent evnt)
+{
+	Unknown::getUnknown()->quit(0);
+}
+
 void render()
 {
 	if (!player->isAlive())
@@ -43,12 +48,14 @@ void render()
 			{
 				entity->kill();
 			}
+
+			UK_MOUSE_LISTENER(restartListener);
 		}
 		failScreen.render(0, 0);
 		return;
 	}
 
-	map->render();
+	map->render(player);
 
 	const Unknown::Dimension<int>* screenSize = Unknown::getUnknown()->screenSize;
 

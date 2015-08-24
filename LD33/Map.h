@@ -8,6 +8,7 @@
 #include "CustomEntitys.h"
 
 class EntityBullet;
+class EntityPlayer;
 
 class Map
 {
@@ -17,10 +18,11 @@ public:
 	Unknown::Graphics::Image* background;
 	bool hasShotBeenFired = false;
 	int policeTimer = 0;
+	bool hasPoliceArrived = false;
 
 	Map(Unknown::Graphics::Image* background);
 
-	void render();
+	void render(EntityPlayer* player);
 	void update();
 };
 

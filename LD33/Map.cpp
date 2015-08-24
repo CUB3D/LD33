@@ -17,7 +17,7 @@ Map::Map(Unknown::Graphics::Image* background) : background(background), entitys
 	this->policeTimer = 15 * 60;
 }
 
-void Map::render()
+void Map::render(EntityPlayer* player)
 {
 	background->render(0, 0, 0);
 
@@ -29,11 +29,12 @@ void Map::render()
 		}
 	}
 
-	if (this->hasShotBeenFired)
-	{
-		const Unknown::Dimension<int>* screenSize = Unknown::getUnknown()->screenSize;
+	const Unknown::Dimension<int>* screenSize = Unknown::getUnknown()->screenSize;
 
-		int barScale = 5;
+	int barScale = 5;
+
+	if (this->hasShotBeenFired && this->policeTimer > 0)
+	{
 		int widthScale = 3;
 
 		UK_DRAW_RECT(screenSize->width / barScale - 2, 2, screenSize->width / barScale * widthScale + 4, 14, Unknown::Colour::BLACK);
@@ -54,11 +55,32 @@ void Map::render()
 
 		drawText(ss.str(), screenSize->width / barScale - 64, 18);
 	}
+
+	if (policeTimer <= 0)
+	{
+		if (!hasPoliceArrived)
+		{
+			hasPoliceArrived = true;
+			// spawn police
+			for (int i = 0; i < 5; i++) // todo: random
+			{
+				EntityGuard* police = new EntityGuard(player, this);
+
+				police->sprite->location.x = rand() % screenSize->width + police->sprite->bounds.size.width + 1;
+				police->sprite->location.y = rand() % screenSize->height + police->sprite->bounds.size.height + 1;
+
+				this->entitys.push_back(police);
+			}
+		}
+
+
+		drawText("The police are here", screenSize->width / barScale - 64, 18);
+	}
 }
 
 void Map::update()
 {
-	if (hasShotBeenFired)
+	if (hasShotBeenFired && policeTimer > 0)
 	{
 		policeTimer--;
 	}
@@ -89,7 +111,7 @@ void Map::update()
 
 					if (dist < 15)
 					{
-						entity->damage(1);
+						entity->damage(5);
 
 						if (!entity->isAlive())
 						{
