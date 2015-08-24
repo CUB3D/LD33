@@ -29,6 +29,8 @@ bool hasDiedYet = false;
 
 Unknown::Graphics::Image failScreen("res/Failscreen.png");
 
+int difficulty = 1;
+
 void restartListener(Unknown::MouseEvent evnt)
 {
 	Unknown::getUnknown()->quit(0);
@@ -79,8 +81,35 @@ void render()
 
 }
 
+bool hasWon()
+{
+	for (auto ent : map->entitys)
+	{
+		if (ent->isAlive())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void update()
 {
+	if (hasWon() && player->isAlive())
+	{
+		difficulty++;
+		//reset
+
+		player = new EntityPlayer(UK_LOAD_SPRITE("Entitys/Player.json"), 100);
+
+		UK_REGISTER_ENTITY(player);
+
+		// generate map
+
+		map = generateRandomMap(difficulty, player);
+	}
+
 	if (!player->isAlive())
 	{
 		return;
@@ -144,7 +173,7 @@ void init()
 
 	// generate map
 
-	map = generateRandomMap(1, player);
+	map = generateRandomMap(difficulty, player);
 
 	UK_MOUSE_LISTENER(onClickListener);
 }
