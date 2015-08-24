@@ -113,9 +113,14 @@ void Map::update()
 
 Map* generateRandomMap(int difficulty, EntityPlayer* player)
 {
-	int currentEntityCount = rand() % 25 + 1;
+	int currentEntityCount = rand() % 25 + 3 * difficulty;
 
 	previousEntityCount += currentEntityCount;
+
+	if (previousEntityCount < difficulty * 2 + 10)
+	{
+		previousEntityCount *= 1.5;
+	}
 
 	std::cout << "Generating map with " << previousEntityCount << " entitys" << std::endl;
 
@@ -125,7 +130,7 @@ Map* generateRandomMap(int difficulty, EntityPlayer* player)
 
 	const Unknown::Dimension<int>* screenSize = Unknown::getUnknown()->screenSize;
 
-	int amountGuard = rand() % previousEntityCount / 2 + 1;
+	int amountGuard = rand() % (previousEntityCount / 3) + 1;
 
 	for (int i = 0; i < previousEntityCount - amountGuard; i++)
 	{

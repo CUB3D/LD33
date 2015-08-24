@@ -17,6 +17,7 @@
 #include "UI2D.h"
 
 #include <sstream>
+#include <time.h>
 
 
 EntityPlayer* player = NULL;
@@ -24,10 +25,26 @@ Map* map = NULL;
 
 int score = 0;
 
+bool hasDiedYet = false;
+
+Unknown::Graphics::Image failScreen("res/Failscreen.png");
+
 void render()
 {
 	if (!player->isAlive())
 	{
+		if (!hasDiedYet)
+		{
+			hasDiedYet = true;
+
+			// kill all entitys
+
+			for (auto entity : map->entitys)
+			{
+				entity->kill();
+			}
+		}
+		failScreen.render(0, 0);
 		return;
 	}
 
@@ -57,6 +74,11 @@ void render()
 
 void update()
 {
+	if (!player->isAlive())
+	{
+		return;
+	}
+
 	map->update();
 
 	for (auto bullet : map->bullets)
@@ -83,15 +105,18 @@ void onClickListener(Unknown::MouseEvent evnt)
 	{
 		if (evnt.buttonState == Unknown::InputState::PRESSED)
 		{
-			double angle = player->sprite->getAngle();
+			if (player->isAlive())
+			{
+				double angle = player->sprite->getAngle();
 
-			EntityBullet* bullet = new EntityBullet(angle, player->sprite->location.x + 8, player->sprite->location.y + 8, true);
+				EntityBullet* bullet = new EntityBullet(angle, player->sprite->location.x + 8, player->sprite->location.y + 8, true);
 
-			UK_REGISTER_ENTITY(bullet);
+				UK_REGISTER_ENTITY(bullet);
 
-			map->bullets.push_back(bullet);
+				map->bullets.push_back(bullet);
 
-			map->hasShotBeenFired = true;
+				map->hasShotBeenFired = true;
+			}
 		}
 	}
 }
@@ -101,6 +126,16 @@ void init()
 	player = new EntityPlayer(UK_LOAD_SPRITE("Entitys/Player.json"), 100);
 
 	UK_REGISTER_ENTITY(player);
+
+	// setup random
+
+	time_t currentTime = 0;
+
+	time(&currentTime);
+
+	srand(currentTime);
+
+	// generate map
 
 	map = generateRandomMap(1, player);
 
