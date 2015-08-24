@@ -26,6 +26,11 @@ int score = 0;
 
 void render()
 {
+	if (!player->isAlive())
+	{
+		return;
+	}
+
 	map->render();
 
 	const Unknown::Dimension<int>* screenSize = Unknown::getUnknown()->screenSize;

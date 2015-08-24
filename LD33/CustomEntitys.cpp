@@ -172,7 +172,7 @@ void EntityBullet::move(double sX, double sY)
 	this->sprite->bounds.location.y = location.y;
 }
 
-EntityGuard::EntityGuard(EntityPlayer* player, Map* map) : HealthEntity(UK_LOAD_SPRITE("Entitys/GuardSprite.json"), 100, 100), map(map), player(player)
+EntityGuard::EntityGuard(EntityPlayer* player, Map* map) : HealthEntity(UK_LOAD_SPRITE("Entitys/GuardSprite.json"), 20, 20), map(map), player(player)
 {
 }
 
@@ -187,7 +187,7 @@ void EntityGuard::update()
 
 		sprite->setAngle(angle);
 
-		if (!(rand() % 100))
+		if (!(rand() % 30))
 		{
 			EntityBullet* bullet = new EntityBullet(angle, this->sprite->location.x + 8, this->sprite->location.y + 8, false);
 

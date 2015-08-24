@@ -1,6 +1,6 @@
 {
-	"X":256,
-	"Y":256,
+	"X":0,
+	"Y":0,
 	"Type":"Image",
 	"Image":"res/Bullet.png"
 }

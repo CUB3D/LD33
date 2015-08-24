@@ -81,10 +81,7 @@ void Map::update()
 			{
 				//if not shot by player ->  don't damage guard
 
-				if (!bullet->isShotByPlayer && entity->getEntityID() == "GUARD")
-				{
-				}
-				else
+				if(bullet->isShotByPlayer || entity->getEntityID() != "GUARD")
 				{
 					int a = bullet->sprite->location.x - entity->sprite->location.x;
 					int b = bullet->sprite->location.y - entity->sprite->location.y;
@@ -96,6 +93,11 @@ void Map::update()
 
 						if (!entity->isAlive())
 						{
+							if (entity->getEntityID() == "GUARD" || !bullet->isShotByPlayer)
+							{
+								EntityPlayer::score += 400;
+							}
+
 							EntityPlayer::score += 100;
 						}
 
